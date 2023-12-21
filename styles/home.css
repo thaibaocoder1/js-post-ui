@@ -19,6 +19,8 @@
 .posts-section .post-item .card-img-top {
   height: 200px;
   width: auto;
+  display: block;
+  object-fit: cover;
   transition: all 0.5s;
 }
 .posts-section .post-item:hover .card-img-top {
