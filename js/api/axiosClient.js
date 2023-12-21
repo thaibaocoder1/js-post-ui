@@ -1,0 +1,45 @@
+import axios from 'axios'
+const axiostClient = axios.create({
+  baseURL: 'https://js-post-api.herokuapp.com/api',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+// Add a request interceptor
+axiostClient.interceptors.request.use(
+  function (config) {
+    // Do something before request is sent
+    // Attach token to request if exists
+    const accessToken = localStorage.getItem('access_token')
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`
+    }
+    return config
+  },
+  function (error) {
+    // Do something with request error
+    return Promise.reject(error)
+  },
+)
+
+// Add a response interceptor
+axiostClient.interceptors.response.use(
+  function (response) {
+    return response.data
+  },
+  function (error) {
+    console.log('axiosClient response error', error)
+    if (!error.response) {
+      throw new Error('Network error. Please try again later')
+    }
+    // Redirect to login if not login
+    if (error.response.status === 401) {
+      window.location.assign('/login.html')
+      return
+    }
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    return Promise.reject(error)
+  },
+)
+export default axiostClient
