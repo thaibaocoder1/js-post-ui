@@ -24,9 +24,17 @@ export function createPostItem(postItem) {
   // go to post detail when click div.post-item
   const divElement = postItemEl.firstElementChild
   if (!divElement) return
-  divElement.addEventListener('click', () => {
+  divElement.addEventListener('click', (e) => {
+    const menu = divElement.querySelector("[data-id='menu']")
+    if (menu && menu.contains(e.target)) return
     window.location.assign(`/post-detail.html?id=${postItem.id}`)
   })
+  const editButton = divElement.querySelector("[data-id='edit']")
+  if (editButton) {
+    editButton.addEventListener('click', () => {
+      window.location.assign(`/add-edit-post.html?id=${postItem.id}`)
+    })
+  }
   return postItemEl
 }
 export function renderListPost(elementID, listPost) {
