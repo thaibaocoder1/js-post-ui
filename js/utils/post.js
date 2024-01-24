@@ -35,6 +35,16 @@ export function createPostItem(postItem) {
       window.location.assign(`/add-edit-post.html?id=${postItem.id}`)
     })
   }
+  const removeButton = divElement.querySelector("[data-id='remove']")
+  if (removeButton) {
+    removeButton.addEventListener('click', (e) => {
+      const customEvent = new CustomEvent('post-delete', {
+        bubbles: true,
+        detail: postItem,
+      })
+      removeButton.dispatchEvent(customEvent)
+    })
+  }
   return postItemEl
 }
 export function renderListPost(elementID, listPost) {
